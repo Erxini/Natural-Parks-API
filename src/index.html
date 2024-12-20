@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plantilandia</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-green-50 flex flex-col items-center">
+  <!-- Cabecera -->
+  <header class="text-center my-5">
+    <h1 class="text-4xl font-bold">Plantilandia</h1>
+    <p class="text-lg mt-2 max-w-2xl">
+      Bienvenido a Plantilandia, tu web sobre plantas. Aquí puedes encontrar información
+      sobre una gran variedad de plantas, incluyendo su nombre científico, origen, tipo
+      de hoja, y mucho más. Simplemente escribe el nombre de la planta que deseas
+      buscar y deja que nosotros te mostremos todo sobre ella. ¡Descubre el fascinante
+      mundo de las plantas con nosotros!
+    </p>
+  </header>
+
+  <!-- Contenedor de búsqueda -->
+  <main id="search-container" class="flex flex-col items-center mt-10">
+    <input type="text" id="plant-name" placeholder="Introduce el nombre del árbol..."
+      class="border rounded px-4 py-2 w-80 text-center" />
+    <button id="search-btn" class="bg-green-500 text-white px-4 py-2 rounded mt-4">Buscar</button>
+  </main>
+
+  <!-- Contenedor de resultados -->
+  <main id="result-container" class="hidden max-w-4xl mt-10">
+    <!-- Aquí se insertarán los resultados de la búsqueda -->
+  </main>
+
+  <!-- Botón de Cuidados -->
+  <div id="cuidados-btn-container" class="hidden text-center mt-6">
+    <button id="cuidados-btn" class="bg-blue-500 text-white px-4 py-2 rounded">
+      Cuidados
+    </button>
+  </div>
+
+  <script src="./js/script.js"></script>
+</body>
+
+</html>
