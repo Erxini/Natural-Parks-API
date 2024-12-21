@@ -4,27 +4,28 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Plantilandia</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Treelandia</title>
+  <link href="./output.css" rel="stylesheet">
 </head>
 
 <body class="bg-green-50 flex flex-col items-center">
   <!-- Cabecera -->
   <header class="text-center my-5">
-    <h1 class="text-4xl font-bold">Plantilandia</h1>
+    <h1 class="text-4xl font-bold">Treelandia</h1>
     <p class="text-lg mt-2 max-w-2xl">
-      Bienvenido a Plantilandia, tu web sobre plantas. Aquí puedes encontrar información
-      sobre una gran variedad de plantas, incluyendo su nombre científico, origen, tipo
-      de hoja, y mucho más. Simplemente escribe el nombre de la planta que deseas
-      buscar y deja que nosotros te mostremos todo sobre ella. ¡Descubre el fascinante
-      mundo de las plantas con nosotros!
+      Bienvenido a Treelandia, tu web sobre árboles. Aquí puedes encontrar información
+      sobre una gran variedad de árboles, incluyendo su nombre científico, origen, tipo
+      de hoja, y mucho más. Simplemente selecciona el nombre del árbol que deseas
+      buscar y deja que nosotros te mostremos todo sobre él. ¡Descubre el fascinante
+      mundo de los árboles con nosotros!
     </p>
   </header>
 
   <!-- Contenedor de búsqueda -->
   <main id="search-container" class="flex flex-col items-center mt-10">
-    <input type="text" id="plant-name" placeholder="Introduce el nombre del árbol..."
-      class="border rounded px-4 py-2 w-80 text-center" />
+    <select id="plant-select" class="border rounded px-4 py-2 w-80 text-center">
+      <option value="">Selecciona una planta...</option>
+    </select>
     <button id="search-btn" class="bg-green-500 text-white px-4 py-2 rounded mt-4">Buscar</button>
   </main>
 

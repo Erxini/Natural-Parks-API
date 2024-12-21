@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cuidados de la Planta</title>
+  <link href="./output.css" rel="stylesheet">
+</head>
+
+<body class="bg-green-50 flex flex-col items-center">
+  <!-- Cabecera -->
+  <header class="text-center my-5">
+    <h1 class="text-4xl font-bold">Cuidados de la Planta</h1>
+    <p class="text-lg mt-2 max-w-2xl">
+      Aquí encontrarás los cuidados y enfermedades relacionadas con la planta que has elegido.
+    </p>
+  </header>
+
+  <!-- Contenedor de detalles de la planta -->
+  <div id="plant-info" class="flex flex-col items-center mt-10">
+    <h2 id="plant-name" class="text-2xl font-bold"></h2>
+    <img id="plant-image" src="" alt="Imagen de la planta" class="rounded mt-4">
+    <p id="plant-description" class="mt-4"></p>
+  </div>
+
+  <!-- Cuidados y enfermedades -->
+  <section id="plant-care" class="mt-10 w-4/5 md:w-2/3">
+    <h2 class="text-xl font-semibold">Cuidados y Enfermedades</h2>
+    <ul id="care-list" class="mt-4"></ul>
+  </section>
+
+  <script src="./js/cuidados.js"></script>
+</body>
+
+</html>
