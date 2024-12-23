@@ -1,112 +1,142 @@
-const searchContainer = document.getElementById('search-container');
-const resultContainer = document.getElementById('result-container');
-const plantSelect = document.getElementById('plant-select');
-const searchBtn = document.getElementById('search-btn');
+import { Parque } from "./parque.js";
 
-const loadPlants = () => {
-  fetch('https://trefle.io/api/v1/plants?token=9E6fKxhuuJMJ2F27La6KB8P85jdGY0iIdX_m42ghELY')
-    .then(response => response.json())
-    .then(data => {
-      if (data && data.data && data.data.length > 0) {
-        data.data.forEach(plant => {
-          const option = document.createElement('option');
-          option.value = plant.common_name || plant.scientific_name;
-          option.textContent = plant.common_name || plant.scientific_name;
-          plantSelect.appendChild(option);
-        });
-      } else {
-        const option = document.createElement('option');
-        option.value = '';
-        option.textContent = 'No se encontraron plantas';
-        plantSelect.appendChild(option);
+const searchContainer = document.getElementById("search-container");
+const resultContainer = document.getElementById("result-container");
+const parkSelect = document.getElementById("park-select");
+const searchBtn = document.getElementById("search-btn");
+const climaBtnContainer = document.getElementById("clima-btn-container");
+const climaBtn = document.getElementById("clima-btn");
+
+const apiKey = "g2dw6V8UQDunYwovVvzZEfwyh9HvM0PMczhnlxRr"; // API Key para NPS
+
+// Función para traducir texto usando MyMemory
+const traducirTexto = (texto, sourceLang = "en", targetLang = "es") => {
+  return fetch(
+    `https://api.mymemory.translated.net/get?q=${encodeURIComponent(
+      texto
+    )}&langpair=${sourceLang}|${targetLang}`
+  )
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.responseData && data.responseData.translatedText) {
+        return data.responseData.translatedText;
       }
+      throw new Error("Error en la traducción");
     })
-    .catch(error => {
-      console.error('Error al cargar las plantas:', error);
-      const option = document.createElement('option');
-      option.value = '';
-      option.textContent = 'Error al cargar las plantas';
-      plantSelect.appendChild(option);
+    .catch((error) => {
+      console.error("Error al traducir:", error);
+      return texto; // Si hay error, devuelve el texto original
     });
 };
 
-const searchPlant = () => {
-  const plantName = plantSelect.value;
-  if (!plantName) {
-    alert('Por favor, selecciona una planta.');
-    return;
-  }
-
-  fetch(`https://trefle.io/api/v1/plants?token=9E6fKxhuuJMJ2F27La6KB8P85jdGY0iIdX_m42ghELY&filter[common_name]=${plantName}`)
-    .then(response => {
+// Cargar la lista de parques desde la API
+const cargarParques = () => {
+  fetch(`https://developer.nps.gov/api/v1/parks?api_key=${apiKey}&limit=100`)
+    .then((response) => {
       if (!response.ok) {
-        throw new Error("Error en la solicitud: " + response.status);
+        throw new Error("Error en la respuesta de la API");
       }
       return response.json();
     })
-    .then(data => {
+    .then((data) => {
       if (data && data.data && data.data.length > 0) {
-        searchContainer.classList.add('hidden');
-        resultContainer.classList.remove('hidden');
-        resultContainer.classList.add('flex', 'flex-col', 'items-center', 'md:flex-row', 'md:justify-center', 'md:gap-4');
+        data.data.forEach((parque) => {
+          const option = document.createElement("option");
+          option.value = parque.id;
+          option.textContent = parque.fullName;
+          parkSelect.appendChild(option);
+        });
+      } else {
+        parkSelect.innerHTML =
+          "<option value=''>No se encontraron parques.</option>";
+      }
+    })
+    .catch((error) => {
+      console.error("Error al cargar los parques:", error);
+      parkSelect.innerHTML =
+        "<option value=''>Error al cargar los parques.</option>";
+    });
+};
 
-        const fragment = document.createDocumentFragment();
-        const plant = data.data[0];
+// Buscar detalles del parque seleccionado y traducir
+const buscarParqueTraducido = () => {
+  const parqueId = parkSelect.value;
+  if (!parqueId) {
+    alert("Por favor, selecciona un parque.");
+    return;
+  }
 
-        const plantDetails = document.createElement('div');
-        plantDetails.classList.add('plant-details', 'flex', 'flex-col', 'items-center', 'md:flex-row', 'md:items-center');
+  fetch(`https://developer.nps.gov/api/v1/parks?api_key=${apiKey}&id=${parqueId}`)
+    .then((response) => response.json())
+    .then((data) => {
+      if (data && data.data && data.data.length > 0) {
+        const parque = data.data[0];
+        const parqueObjeto = new Parque(
+          parque.id,
+          parque.fullName,
+          parque.description,
+          parque.states,
+          parque.images[0] ? parque.images[0].url : "https://via.placeholder.com/150"
+        );
 
-        const imgElement = document.createElement('img');
-        imgElement.src = plant.image_url || 'https://via.placeholder.com/150';
-        imgElement.classList.add('rounded', 'w-full', 'md:w-1/2', 'max-w-xs');
-        plantDetails.appendChild(imgElement);
+        // Traducir nombre y descripción
+        Promise.all([
+          traducirTexto(parqueObjeto.nombre),
+          traducirTexto(parqueObjeto.descripcion),
+        ]).then(([nombreTraducido, descripcionTraducida]) => {
+          parqueObjeto.nombre = nombreTraducido;
+          parqueObjeto.descripcion = descripcionTraducida;
 
-        const infoElement = document.createElement('div');
-        infoElement.classList.add('plant-info', 'mt-4', 'md:mt-0', 'md:ml-4');
+          // Crear elementos usando Fragment
+          const fragment = document.createDocumentFragment();
 
-        const nameElement = document.createElement('h2');
-        nameElement.classList.add('text-2xl', 'font-bold');
-        nameElement.textContent = plant.common_name || plant.scientific_name;
-        infoElement.appendChild(nameElement);
+          const img = document.createElement("img");
+          img.src = parqueObjeto.imagen;
+          img.className = "rounded w-full max-w-md";
 
-        const scientificName = document.createElement('p');
-        scientificName.innerHTML = `<strong>Nombre Científico:</strong> ${plant.scientific_name}`;
-        infoElement.appendChild(scientificName);
+          const infoContainer = document.createElement("div");
+          infoContainer.className = "flex flex-col mx-0 text-lime-200 justify-start gap-4 text-justify";
 
-        const genus = document.createElement('p');
-        genus.innerHTML = `<strong>Género:</strong> ${plant.genus || 'Desconocido'}`;
-        infoElement.appendChild(genus);
+          const title = document.createElement("h2");
+          title.className = "text-2xl font-bold";
+          title.textContent = parqueObjeto.nombre;
 
-        const family = document.createElement('p');
-        family.innerHTML = `<strong>Familia:</strong> ${plant.family || 'Desconocido'}`;
-        infoElement.appendChild(family);
+          const description = document.createElement("p");
+          description.innerHTML = "<strong>Descripción:</strong> " + parqueObjeto.descripcion;
 
-        plantDetails.appendChild(infoElement);
-        fragment.appendChild(plantDetails);
+          const states = document.createElement("p");
+          states.innerHTML = "<strong>Estado(s):</strong> " + parqueObjeto.estado;
 
-        resultContainer.innerHTML = '';
-        resultContainer.appendChild(fragment);
+          infoContainer.appendChild(title);
+          infoContainer.appendChild(description);
+          infoContainer.appendChild(states);
 
-        // Guardar información en localStorage
-        localStorage.setItem('selectedPlant', JSON.stringify({
-          name: plantName,
-          scientificName: plant.scientific_name,
-          genus: plant.genus,
-          family: plant.family
-        }));
+          const container = document.createElement("div");
+          container.className = "flex flex-col gap-6 items-center justify-center md:flex-row";
+          container.appendChild(img);
+          container.appendChild(infoContainer);
 
-        const cuidadosBtnContainer = document.getElementById('cuidados-btn-container');
-        cuidadosBtnContainer.classList.remove('hidden');
+          fragment.appendChild(container);
 
-        const cuidadosBtn = document.getElementById('cuidados-btn');
-        cuidadosBtn.addEventListener('click', () => {
-          window.location.href = 'cuidados.html';
+          resultContainer.innerHTML = "";
+          resultContainer.appendChild(fragment);
+
+          searchContainer.classList.add("hidden");
+          resultContainer.classList.remove("hidden");
+          climaBtnContainer.classList.remove("hidden");
         });
       }
     })
+    .catch((error) => {
+      console.error("Error al buscar el parque:", error);
+    });
 };
 
-document.addEventListener('DOMContentLoaded', () => {
-  loadPlants();
-  searchBtn.addEventListener('click', searchPlant);
+// Event Listeners
+document.addEventListener("DOMContentLoaded", () => {
+  cargarParques();
+  searchBtn.addEventListener("click", buscarParqueTraducido);
+  climaBtn.addEventListener("click", () => {
+    window.location.href = "clima.html";
+  });
 });
