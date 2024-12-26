@@ -1,10 +1,12 @@
 export class Parque {
-    constructor(id, nombre, descripcion, estado, imagen) {
+    constructor(id, nombre, descripcion, estado, imagen,lat,lng) {
       this._id = id;
       this._nombre = nombre;
       this._descripcion = descripcion;
       this._estado = estado;
       this._imagen = imagen;
+      this._lat = lat;
+      this._lng = lng;
     }
   
     // Getters
@@ -27,7 +29,14 @@ export class Parque {
     get imagen() {
       return this._imagen;
     }
+
+    get lat() {
+      return this._lat;
+    } 
   
+    get lng() {
+      return this._lng;
+    }
     // Setters
     set id(value) {
       this._id = value;
@@ -47,6 +56,14 @@ export class Parque {
   
     set imagen(value) {
       this._imagen = value;
+    }
+    
+    set lat(value) {
+      this._lat = value;
+    }
+    
+    set lng(value) {
+      this._lng = value;
     }
   }
   

@@ -12,9 +12,7 @@ const apiKey = "g2dw6V8UQDunYwovVvzZEfwyh9HvM0PMczhnlxRr"; // API Key para NPS
 // Función para traducir texto usando MyMemory
 const traducirTexto = (texto, sourceLang = "en", targetLang = "es") => {
   return fetch(
-    `https://api.mymemory.translated.net/get?q=${encodeURIComponent(
-      texto
-    )}&langpair=${sourceLang}|${targetLang}`
+    `https://api.mymemory.translated.net/get?q=${encodeURIComponent(texto)}&langpair=${sourceLang}|${targetLang}`
   )
     .then((response) => response.json())
     .then((data) => {
@@ -76,7 +74,9 @@ const buscarParqueTraducido = () => {
           parque.fullName,
           parque.description,
           parque.states,
-          parque.images[0] ? parque.images[0].url : "https://via.placeholder.com/150"
+          parque.images[0] ? parque.images[0].url : "https://via.placeholder.com/150",
+          parque.lat,
+          parque.lng
         );
 
         // Traducir nombre y descripción
@@ -86,6 +86,7 @@ const buscarParqueTraducido = () => {
         ]).then(([nombreTraducido, descripcionTraducida]) => {
           parqueObjeto.nombre = nombreTraducido;
           parqueObjeto.descripcion = descripcionTraducida;
+          localStorage.setItem('parqueSeleccionado', JSON.stringify(parqueObjeto));
 
           // Crear elementos usando Fragment
           const fragment = document.createDocumentFragment();
