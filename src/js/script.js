@@ -95,7 +95,7 @@ const buscarParqueTraducido = () => {
           img.className = "rounded w-full max-w-md";
 
           const infoContainer = document.createElement("div");
-          infoContainer.className = "flex flex-col mx-0 text-black justify-start gap-4 text-justify";
+          infoContainer.className = "flex flex-col mx-0 text-lime-950 justify-start gap-4 text-justify";
 
           const title = document.createElement("h2");
           title.className = "text-2xl font-bold";
