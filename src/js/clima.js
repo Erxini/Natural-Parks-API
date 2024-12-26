@@ -1,4 +1,4 @@
-const weatherApiKey = '8ab098ac9cc24452a42114725242612';
+//Obtenemos los datos del localstorage
 const parkData = JSON.parse(localStorage.getItem('parqueSeleccionado'));
 
 const cargarDatosParque = () => {
@@ -7,36 +7,30 @@ const cargarDatosParque = () => {
     const weatherInfo = document.getElementById('weather-info');
     const parkImage = document.getElementById('park-image');
 
-    parkName.textContent = parkData._nombre || "Nombre del Parque";
+    parkName.textContent = parkData._nombre;
     parkImage.src = parkData._imagen || 'https://via.placeholder.com/150';
-     // Obtener coordenadas
-     const lat = parkData._lat;
-     const lng = parkData._lng;
- 
-     if (!lat || !lng) {
-       weatherInfo.textContent = 'No se encontraron las coordenadas del parque para obtener el clima.';
-       return;
-     }
 
-    // Verificar si el estado está definido
-    const estado = parkData._estado?.trim();
-
-    if (!estado) {
-      weatherInfo.textContent = 'No se pudo obtener el estado del parque.';
-      return;
-    }
-
-    // Obtener clima
-    // fetch(`http://api.weatherapi.com/v1/current.json?key=8ab098ac9cc24452a42114725242612&q=${estado}`)
-    // fetch(`http://api.weatherapi.com/v1/current.json?key=${weatherApiKey}&q=${estado}`)
-    fetch(`http://api.weatherapi.com/v1/current.json?key=${weatherApiKey}&q=${lat},${lng}`)
+    // Obtener clima utilizando latitud y longitud
+    const lat = parkData._latitude;
+    const lon = parkData._longitude;
+   
+    fetch('http://api.weatherapi.com/v1/current.json?key=8ab098ac9cc24452a42114725242612&q=' + lat + ',' + lon)
       .then(response => {
+        if (!lat || !lon) {
+          console.error('Latitud o longitud no definidas');
+          weatherInfo.textContent = 'No se pudo obtener el clima del parque.';
+          return;
+        }
+        
         if (!response.ok) {
-          throw new Error('Error al obtener datos de WeatherAPI');
+          throw new Error('Error en la respuesta de la API');
         }
         return response.json();
       })
       .then(data => {
+        if (!data.current) {
+          throw new Error('Datos de clima no disponibles');
+        }
         const { temp_c, condition } = data.current;
         const fechaActual = new Date().toLocaleDateString();
 
@@ -44,7 +38,7 @@ const cargarDatosParque = () => {
 
         const tempElement = document.createElement('p');
         tempElement.classList.add('text-2xl');
-        tempElement.textContent = 'Temperatura: ' + temp_c + '°C';
+        tempElement.textContent = 'Temperatura Actual: ' + temp_c + '°C';
 
         const iconElement = document.createElement('img');
         iconElement.src = condition.icon;
@@ -53,7 +47,7 @@ const cargarDatosParque = () => {
 
         const fechaElement = document.createElement('p');
         fechaElement.classList.add('text-xl');
-        fechaElement.textContent = 'Fecha: ' + fechaActual;
+        fechaElement.textContent = 'Fecha Actual: ' + fechaActual;
 
         fragment.appendChild(tempElement);
         fragment.appendChild(iconElement);

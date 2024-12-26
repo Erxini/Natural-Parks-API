@@ -7,12 +7,9 @@ const searchBtn = document.getElementById("search-btn");
 const climaBtnContainer = document.getElementById("clima-btn-container");
 const climaBtn = document.getElementById("clima-btn");
 
-const apiKey = "g2dw6V8UQDunYwovVvzZEfwyh9HvM0PMczhnlxRr"; // API Key para NPS
-
-// Función para traducir texto usando MyMemory
+// Función para traducir texto usando la API MyMemory
 const traducirTexto = (texto, sourceLang = "en", targetLang = "es") => {
-  return fetch(
-    `https://api.mymemory.translated.net/get?q=${encodeURIComponent(texto)}&langpair=${sourceLang}|${targetLang}`
+  return fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(texto)}&langpair=${sourceLang}|${targetLang}`
   )
     .then((response) => response.json())
     .then((data) => {
@@ -23,13 +20,13 @@ const traducirTexto = (texto, sourceLang = "en", targetLang = "es") => {
     })
     .catch((error) => {
       console.error("Error al traducir:", error);
-      return texto; // Si hay error, devuelve el texto original
+      return texto; 
     });
 };
 
 // Cargar la lista de parques desde la API
 const cargarParques = () => {
-  fetch(`https://developer.nps.gov/api/v1/parks?api_key=${apiKey}&limit=100`)
+  fetch(`https://developer.nps.gov/api/v1/parks?api_key=g2dw6V8UQDunYwovVvzZEfwyh9HvM0PMczhnlxRr&limit=100`)
     .then((response) => {
       if (!response.ok) {
         throw new Error("Error en la respuesta de la API");
@@ -46,7 +43,7 @@ const cargarParques = () => {
         });
       } else {
         parkSelect.innerHTML =
-          "<option value=''>No se encontraron parques.</option>";
+          "<option value=''>Seleccione un parque por favor.</option>";
       }
     })
     .catch((error) => {
@@ -64,7 +61,7 @@ const buscarParqueTraducido = () => {
     return;
   }
 
-  fetch(`https://developer.nps.gov/api/v1/parks?api_key=${apiKey}&id=${parqueId}`)
+  fetch(`https://developer.nps.gov/api/v1/parks?api_key=g2dw6V8UQDunYwovVvzZEfwyh9HvM0PMczhnlxRr&id=${parqueId}`)
     .then((response) => response.json())
     .then((data) => {
       if (data && data.data && data.data.length > 0) {
@@ -75,20 +72,20 @@ const buscarParqueTraducido = () => {
           parque.description,
           parque.states,
           parque.images[0] ? parque.images[0].url : "https://via.placeholder.com/150",
-          parque.lat,
-          parque.lng
+          parque.latitude,
+          parque.longitude
         );
 
         // Traducir nombre y descripción
         Promise.all([
           traducirTexto(parqueObjeto.nombre),
-          traducirTexto(parqueObjeto.descripcion),
+          traducirTexto(parqueObjeto.descripcion)
         ]).then(([nombreTraducido, descripcionTraducida]) => {
           parqueObjeto.nombre = nombreTraducido;
           parqueObjeto.descripcion = descripcionTraducida;
           localStorage.setItem('parqueSeleccionado', JSON.stringify(parqueObjeto));
 
-          // Crear elementos usando Fragment
+          // Crear la foto y el parque
           const fragment = document.createDocumentFragment();
 
           const img = document.createElement("img");
