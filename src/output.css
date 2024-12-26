@@ -635,6 +635,14 @@ video {
   margin-top: 8rem;
 }
 
+.mt-8 {
+  margin-top: 2rem;
+}
+
+.mt-20 {
+  margin-top: 5rem;
+}
+
 .flex {
   display: flex;
 }
@@ -767,6 +775,39 @@ video {
   background-color: rgb(163 230 53 / var(--tw-bg-opacity, 1));
 }
 
+.bg-white {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+}
+
+.bg-opacity-70 {
+  --tw-bg-opacity: 0.7;
+}
+
+.bg-opacity-20 {
+  --tw-bg-opacity: 0.2;
+}
+
+.bg-opacity-50 {
+  --tw-bg-opacity: 0.5;
+}
+
+.bg-\[url\(\'\.\/assets\/images\/fondo\.jpg\'\)\] {
+  background-image: url('./assets/images/fondo.jpg');
+}
+
+.bg-cover {
+  background-size: cover;
+}
+
+.bg-center {
+  background-position: center;
+}
+
+.bg-no-repeat {
+  background-repeat: no-repeat;
+}
+
 .px-4 {
   padding-left: 1rem;
   padding-right: 1rem;
@@ -785,6 +826,11 @@ video {
 .py-10 {
   padding-top: 2.5rem;
   padding-bottom: 2.5rem;
+}
+
+.py-6 {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
 }
 
 .pt-6 {
@@ -879,6 +925,11 @@ video {
 .text-lime-200 {
   --tw-text-opacity: 1;
   color: rgb(217 249 157 / var(--tw-text-opacity, 1));
+}
+
+.text-lime-800 {
+  --tw-text-opacity: 1;
+  color: rgb(63 98 18 / var(--tw-text-opacity, 1));
 }
 
 .filter {
