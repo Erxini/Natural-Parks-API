@@ -60,7 +60,9 @@ const buscarParqueTraducido = () => {
     alert("Por favor, selecciona un parque.");
     return;
   }
-
+  // Ocultar el águila al iniciar la búsqueda
+  containerBird.style.display = "none";
+  
   fetch(`https://developer.nps.gov/api/v1/parks?api_key=g2dw6V8UQDunYwovVvzZEfwyh9HvM0PMczhnlxRr&id=${parqueId}`)
     .then((response) => response.json())
     .then((data) => {
@@ -129,6 +131,31 @@ const buscarParqueTraducido = () => {
       console.error("Error al buscar el parque:", error);
     });
 };
+
+//Animación del Águila
+const bird = document.getElementById('bird');
+const containerBird = document.getElementById('bird-container');
+let direction = 1
+let position = 0;
+const speed = 1;
+const containerWidth = containerBird.offsetWidth;
+const birdWidth = bird.offsetWidth;
+
+// Función de movimiento del águila
+const moveBird = () => {
+  position += speed * direction;
+  if (position >= containerWidth - birdWidth) {
+    direction = -1;
+    bird.style.transform = 'scaleX(-1)';
+  }
+  if (position <= 0) {
+    direction = 1;
+    bird.style.transform = 'scaleX(1)';
+  }
+  bird.style.left = position +'px';
+};
+setInterval(moveBird, 20);
+
 
 // Event Listeners
 document.addEventListener("DOMContentLoaded", () => {

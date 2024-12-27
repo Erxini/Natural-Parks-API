@@ -6,19 +6,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>North American Park API</title>
   <link href="./output.css" rel="stylesheet">
+  <link rel="stylesheet" href="./css/style.css">
+  <link rel="shortcut icon" href="assets/images/favicon.png" type="image/x-icon">
 </head>
 
-<body class="text-lime-950 flex justify-center bg-[url('./assets/images/fondo.jpg')] bg-cover bg-center bg-no-repeat">
-  <div class="container max-w-7xl my-32 px-6 py-6 bg-white bg-opacity-70">
+<body class="text-lime-950 flex justify-center bg-[url('./assets/images/fondo.jpg')] bg-cover bg-center bg-no-repeat animate-fadeInUp">
+  <div class="container max-w-7xl mt-20 px-6 py-6 bg-white bg-opacity-70">
     <!-- Cabecera -->
     <header class="text-center my-5">
       <h1 class="text-4xl text-lime-950 font-bold pb-3">North American Park API</h1>
-      <p class="text-2xl text-lime-950 font-light text-justify mt-2 max-w-3xl mx-auto">
+      <p class="text-2xl text-lime-950 text-justify mt-2 max-w-4xl mx-auto">
         Bienvenido a North American Park API, la web sobre parques nacionales del norte de América. Aquí podrás descubrir información sobre la historia 
         y aspectos de los principales parques nacionales norteamericanos, su ubicación y consultar el clima en el momento. Todo ello en castellano.
       </p>
     </header>
-
+    
+    <!--Animación águila-->
+    <div id="bird-container">
+      <img id="bird" src="./assets/images/aguila.png" alt="Águila volando">
+    </div>
+    
     <!-- Contenedor de búsqueda -->
     <main id="search-container" class="flex flex-col items-center mt-10">
       <select id="park-select" class="border rounded px-4 py-2 w-80 text-center">
@@ -29,15 +36,16 @@
 
     <!-- Contenedor de resultados -->
     <main id="result-container" class="max-w-4xl mt-10 mx-auto flex flex-col justify-center md:flex-row md:items-start md:gap-6">
-      <!-- Aquí se insertarán los resultados -->
+      <!-- Aquí se insertan los resultados -->
     </main>
 
-    <!-- Botón Clima -->
+    <!-- Comprobar Clima -->
     <div id="clima-btn-container" class="hidden text-center mt-6">
       <button id="clima-btn" class="bg-lime-800 text-black px-4 py-2 rounded">
         Clima
       </button>
     </div>
+    <!--Enlace a la web oficial-->
     <footer class="text-center mt-10 pt-30 text-lime-950 font-normal">
       <p>Para más información visitar: <a href="https://www.nps.gov/index.htm">https://www.nps.gov/index.htm</a></p>
     </footer>

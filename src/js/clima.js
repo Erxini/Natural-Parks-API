@@ -43,7 +43,7 @@ const cargarDatosParque = () => {
         const iconElement = document.createElement('img');
         iconElement.src = condition.icon;
         iconElement.alt = condition.text;
-        iconElement.classList.add('mx-auto');
+        iconElement.classList.add('mx-auto', 'bg-lime-800', 'rounded', 'p-2');
 
         const fechaElement = document.createElement('p');
         fechaElement.classList.add('text-xl');
